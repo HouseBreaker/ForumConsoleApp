@@ -1,17 +1,25 @@
 ﻿using Forum.App.Commands.Contracts;
+using Forum.Services.Contracts;
 
 namespace Forum.App.Commands
 {
     public class LogoutCommand : ICommand
     {
-	    public string Execute(params string[] arguments)
+	    private readonly IUserSessionService userSessionService;
+
+	    public LogoutCommand(IUserSessionService userSessionService)
 	    {
-		    if (Session.User == null)
+		    this.userSessionService = userSessionService;
+	    }
+
+		public string Execute(params string[] arguments)
+	    {
+		    if (!userSessionService.IsLoggedIn())
 		    {
 			    return "You are not logged in!";
 		    }
 
-		    Session.User = null;
+		    this.userSessionService.Logout();
 
 		    return "Logged out successfully!";
 	    }

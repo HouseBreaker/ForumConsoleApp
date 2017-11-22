@@ -31,6 +31,8 @@ namespace Forum.App
 			serviceCollection.AddTransient<ICategoryService, CategoryService>();
 			serviceCollection.AddTransient<IReplyService, ReplyService>();
 
+			serviceCollection.AddSingleton<IUserSessionService, UserSessionService>();
+
 			var serviceProvider = serviceCollection.BuildServiceProvider();
 
 			return serviceProvider;

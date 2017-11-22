@@ -9,10 +9,12 @@ namespace Forum.App.Commands
 	public class ReplyCommand : ICommand
 	{
 		private readonly IReplyService replyService;
+		private readonly IUserSessionService userSessionService;
 
-		public ReplyCommand(IReplyService replyService)
+		public ReplyCommand(IReplyService replyService, IUserSessionService userSessionService)
 		{
 			this.replyService = replyService;
+			this.userSessionService = userSessionService;
 		}
 
 		public string Execute(params string[] arguments)
@@ -20,12 +22,12 @@ namespace Forum.App.Commands
 			var postId = int.Parse(arguments[0]);
 			var content = arguments[1];
 
-			if (Session.User == null)
+			if (!userSessionService.IsLoggedIn())
 			{
 				return "You are not logged in!";
 			}
 
-			var authorId = Session.User.Id;
+			var authorId = userSessionService.User.Id;
 
 			replyService.Create(content, postId, authorId);
 

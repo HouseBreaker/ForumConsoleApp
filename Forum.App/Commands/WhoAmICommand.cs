@@ -1,17 +1,26 @@
 ﻿using Forum.App.Commands.Contracts;
+using Forum.Services;
+using Forum.Services.Contracts;
 
 namespace Forum.App.Commands
 {
     public class WhoAmICommand : ICommand
     {
+	    private readonly IUserSessionService userSessionService;
+
+	    public WhoAmICommand(IUserSessionService userSessionService)
+	    {
+		    this.userSessionService = userSessionService;
+	    }
+
 	    public string Execute(params string[] arguments)
 	    {
-		    if (Session.User == null)
+		    if (!userSessionService.IsLoggedIn())
 		    {
 			    return "You are not logged in!";
 		    }
 
-		    var currentUser = Session.User.Username;
+		    var currentUser = userSessionService.User.Username;
 
 		    return $"{currentUser}";
 	    }

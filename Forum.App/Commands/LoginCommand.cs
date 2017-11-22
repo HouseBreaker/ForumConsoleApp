@@ -5,11 +5,11 @@ namespace Forum.App.Commands
 {
     public class LoginCommand : ICommand
     {
-	    private readonly IUserService userService;
+	    private readonly IUserSessionService userSessionService;
 
-	    public LoginCommand(IUserService userService)
+	    public LoginCommand(IUserSessionService userSessionService)
 	    {
-		    this.userService = userService;
+		    this.userSessionService = userSessionService;
 	    }
 
 	    public string Execute(params string[] arguments)
@@ -17,14 +17,12 @@ namespace Forum.App.Commands
 		    var username = arguments[0];
 		    var password = arguments[1];
 
-		    var user = userService.ByUsernameAndPassword(username, password);
+		    var user = userSessionService.Login(username, password);
 
 		    if (user == null)
 		    {
 			    return "Invalid username or password!";
 		    }
-
-		    Session.User = user;
 
 		    return "Logged in successfully";
 	    }
