@@ -5,9 +5,16 @@ using Forum.App.Commands.Contracts;
 
 namespace Forum.App
 {
-	internal class CommandParser
+	public class CommandParser
 	{
-		public static ICommand ParseCommand(IServiceProvider serviceProvider, string commandName)
+		private readonly IServiceProvider serviceProvider;
+
+		public CommandParser(IServiceProvider serviceProvider)
+		{
+			this.serviceProvider = serviceProvider;
+		}
+
+		public ICommand ParseCommand(string commandName)
 		{
 			var assembly = Assembly.GetExecutingAssembly();
 
@@ -23,7 +30,14 @@ namespace Forum.App
 				throw new InvalidOperationException("Invalid command!");
 			}
 
-			var constructor = commandType.GetConstructors().First();
+			var command = InjectServices(commandType);
+
+			return command;
+		}
+
+		private ICommand InjectServices(Type type)
+		{
+			var constructor = type.GetConstructors().First();
 
 			var constructorParameters = constructor
 				.GetParameters()

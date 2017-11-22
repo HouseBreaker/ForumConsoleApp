@@ -19,6 +19,8 @@ namespace Forum.App
 			var databaseInitializerService = serviceProvider.GetService<IDatabaseInitializerService>();
 		    databaseInitializerService.InitializeDatabase();
 
+		    var commandParser = new CommandParser(serviceProvider);
+
 		    while (true)
 		    {
 				Console.Write("Enter command: ");
@@ -32,7 +34,7 @@ namespace Forum.App
 
 			    try
 			    {
-				    var command = CommandParser.ParseCommand(serviceProvider, commandName);
+				    var command = commandParser.ParseCommand(commandName);
 
 				    var result = command.Execute(commandArgs);
 
