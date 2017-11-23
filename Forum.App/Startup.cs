@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using AutoMapper;
 using Forum.Data;
 using Forum.Services;
 using Forum.Services.Contracts;
@@ -39,6 +40,8 @@ namespace Forum.App
 			serviceCollection.AddTransient<IReplyService, ReplyService>();
 
 			serviceCollection.AddSingleton<IUserSessionService, UserSessionService>();
+
+			serviceCollection.AddAutoMapper();
 
 			var serviceProvider = serviceCollection.BuildServiceProvider();
 

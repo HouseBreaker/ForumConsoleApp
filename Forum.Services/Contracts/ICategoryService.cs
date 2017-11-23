@@ -4,7 +4,7 @@ namespace Forum.Services.Contracts
 {
 	public interface ICategoryService
 	{
-		Category ByName(string name);
+		TModel ByName<TModel>(string name);
 
 		Category Create(string name);
 	}

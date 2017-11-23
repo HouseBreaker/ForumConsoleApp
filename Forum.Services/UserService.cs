@@ -1,61 +1,70 @@
 ﻿using System;
 using System.Linq;
+using AutoMapper.QueryableExtensions;
 using Forum.Data;
 using Forum.Models;
 using Forum.Services.Contracts;
+using Remotion.Linq.Clauses;
 
 namespace Forum.Services
 {
-    public class UserService : IUserService
-    {
-	    private readonly ForumDbContext context;
+	public class UserService : IUserService
+	{
+		private readonly ForumDbContext context;
 
-	    public UserService(ForumDbContext context)
-	    {
-		    this.context = context;
-	    }
-
-	    public User ById(int id)
-	    {
-		    var user = context.Users.Find(id);
-
-		    return user;
-	    }
-
-	    public User ByUsername(string username)
-	    {
-		    var user = context.Users
-			    .SingleOrDefault(u => u.Username == username);
-
-		    return user;
-	    }
-
-	    public User ByUsernameAndPassword(string username, string password)
-	    {
-			var user = context.Users
-			    .SingleOrDefault(u => u.Username == username && u.Password == password);
-
-		    return user;
+		public UserService(ForumDbContext context)
+		{
+			this.context = context;
 		}
 
-	    public User Create(string username, string password)
-	    {
-		    var user = new User(username, password);
+		public TModel ById<TModel>(int id)
+		{
+			var user = context.Users
+				.Where(u => u.Id == id)
+				.ProjectTo<TModel>()
+				.SingleOrDefault();
 
-		    context.Users.Add(user);
+			return user;
+		}
 
-		    context.SaveChanges();
+		public TModel ByUsername<TModel>(string username)
+		{
+			var user = context.Users
+				.Where(u => u.Username == username)
+				.ProjectTo<TModel>()
+				.SingleOrDefault();
 
-		    return user;
-	    }
+			return user;
+		}
 
-	    public void Delete(int id)
-	    {
-		    var user = context.Users.Find(id);
+		public TModel ByUsernameAndPassword<TModel>(string username, string password)
+		{
+			var user = context.Users
+				.Where(u => u.Username == username && u.Password == password)
+				.ProjectTo<TModel>()
+				.SingleOrDefault();
 
-		    context.Users.Remove(user);
+			return user;
+		}
 
-		    context.SaveChanges();
-	    }
-    }
+		public User Create(string username, string password)
+		{
+			var user = new User(username, password);
+
+			context.Users.Add(user);
+
+			context.SaveChanges();
+
+			return user;
+		}
+
+		public void Delete(int id)
+		{
+			var user = context.Users.Find(id);
+
+			context.Users.Remove(user);
+
+			context.SaveChanges();
+		}
+	}
 }

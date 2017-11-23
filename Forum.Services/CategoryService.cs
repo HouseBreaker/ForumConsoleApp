@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using AutoMapper.QueryableExtensions;
 using Forum.Data;
 using Forum.Models;
 using Forum.Services.Contracts;
@@ -14,10 +15,12 @@ namespace Forum.Services
 		    this.context = context;
 	    }
 
-	    public Category ByName(string name)
+	    public TModel ByName<TModel>(string name)
 	    {
 		    var category = context.Categories
-			    .SingleOrDefault(c => c.Name == name);
+			    .Where(c => c.Name == name)
+			    .ProjectTo<TModel>()
+			    .SingleOrDefault();
 
 		    return category;
 	    }

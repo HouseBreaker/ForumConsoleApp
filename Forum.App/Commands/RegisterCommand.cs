@@ -1,5 +1,6 @@
 ﻿using System;
 using Forum.App.Commands.Contracts;
+using Forum.Models;
 using Forum.Services.Contracts;
 
 namespace Forum.App.Commands
@@ -18,7 +19,7 @@ namespace Forum.App.Commands
 		    var username = arguments[0];
 		    var password = arguments[1];
 
-		    var existingUser = userService.ByUsername(username);
+		    var existingUser = userService.ByUsername<User>(username);
 
 		    if (existingUser != null)
 		    {

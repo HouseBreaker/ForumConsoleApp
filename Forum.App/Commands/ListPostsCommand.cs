@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Text;
 using Forum.App.Commands.Contracts;
+using Forum.App.Models;
+using Forum.Models;
 using Forum.Services.Contracts;
 
 namespace Forum.App.Commands
@@ -18,21 +20,21 @@ namespace Forum.App.Commands
 		public string Execute(params string[] arguments)
 		{
 			var posts = postService
-				.All()
-				.GroupBy(p => p.Category)
+				.All<PostDetailsViewModel>()
+				.GroupBy(p => p.CategoryName)
 				.ToArray();
 
 			var sb = new StringBuilder();
 
 			foreach (var group in posts)
 			{
-				var categoryName = group.Key.Name;
+				var categoryName = group.Key;
 
 				sb.AppendLine(categoryName + ":");
 
 				foreach (var post in group)
 				{
-					sb.AppendLine($"  {post.Id}. {post.Title} - {post.Content} by {post.Author.Username}");
+					sb.AppendLine($"  {post.Id}. {post.Title} - {post.Content} by {post.AuthorUsername}");
 				}
 			}
 

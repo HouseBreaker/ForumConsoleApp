@@ -16,7 +16,7 @@ namespace Forum.Services
 
 		public User Login(string username, string password)
 		{
-			this.User = userService.ByUsernameAndPassword(username, password);
+			this.User = userService.ByUsernameAndPassword<User>(username, password);
 
 			return this.User;
 		}

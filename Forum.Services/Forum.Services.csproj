@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Automapper" Version="6.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Forum.Data\Forum.Data.csproj" />
     <ProjectReference Include="..\Forum.Models\Forum.Models.csproj" />
   </ItemGroup>

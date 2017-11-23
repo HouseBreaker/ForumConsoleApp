@@ -29,7 +29,7 @@ namespace Forum.App.Commands
 			    return "You are not logged in!";
 		    }
 
-		    var category = categoryService.ByName(categoryName);
+		    var category = categoryService.ByName<Category>(categoryName);
 
 		    if (category == null)
 		    {

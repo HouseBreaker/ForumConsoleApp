@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutoMapper.QueryableExtensions;
 using Forum.Data;
 using Forum.Models;
 using Forum.Services.Contracts;
-using Microsoft.EntityFrameworkCore;
 
 namespace Forum.Services
 {
@@ -34,23 +34,22 @@ namespace Forum.Services
 		    return post;
 	    }
 
-	    public IEnumerable<Post> All()
+	    public IEnumerable<TModel> All<TModel>()
 	    {
 		    var posts = context.Posts
-				.Include(p => p.Author)
-				.Include(p => p.Category)
+				.ProjectTo<TModel>()
 				.ToArray();
 
 		    return posts;
 	    }
 
-	    public Post ById(int postId)
+	    public TModel ById<TModel>(int postId)
 	    {
 		    var post = context
-				.Posts
-				.Include(p => p.Replies)
-					.ThenInclude(r => r.Author)
-				.SingleOrDefault(p => p.Id == postId);
+			    .Posts
+			    .Where(p => p.Id == postId)
+			    .ProjectTo<TModel>()
+				.First();
 
 		    return post;
 	    }

@@ -7,8 +7,8 @@ namespace Forum.Services.Contracts
     {
 	    Post Create(string title, string content, int categoryId, int authorId);
 
-	    IEnumerable<Post> All();
+	    IEnumerable<TModel> All<TModel>();
 
-		Post ById(int postId);
+		TModel ById<TModel>(int postId);
     }
 }

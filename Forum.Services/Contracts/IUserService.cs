@@ -4,11 +4,11 @@ namespace Forum.Services.Contracts
 {
     public interface IUserService
     {
-	    User ById(int id);
+	    TModel ById<TModel>(int id);
 
-	    User ByUsername(string username);
+	    TModel ByUsername<TModel>(string username);
 
-	    User ByUsernameAndPassword(string username, string password);
+	    TModel ByUsernameAndPassword<TModel>(string username, string password);
 
 	    User Create(string username, string password);
 
