@@ -1,14 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using Forum.Models;
 
 namespace Forum.Services.Contracts
 {
     public interface IPostService
     {
-	    Post Create(string title, string content, int categoryId, int authorId);
+	    TModel Create<TModel>(string title, string content, int categoryId, int authorId);
 
-	    IEnumerable<Post> All();
+	    IQueryable<TModel> All<TModel>();
 
-		Post ById(int postId);
+		TModel ById<TModel>(int postId);
+
+	    IQueryable<TModel> By<TModel>(Expression<Func<Post, bool>> predicate);
     }
 }

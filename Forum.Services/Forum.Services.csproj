@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Automapper" Version="7.0.1" />
+    <PackageReference Include="Automapper.Extensions.Microsoft.DependencyInjection" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Forum.Data\Forum.Data.csproj" />
     <ProjectReference Include="..\Forum.Models\Forum.Models.csproj" />
   </ItemGroup>

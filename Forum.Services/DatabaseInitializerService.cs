@@ -1,5 +1,4 @@
-﻿using System;
-using Forum.Data;
+﻿using Forum.Data;
 using Forum.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +15,8 @@ namespace Forum.Services
 
 		public void InitializeDatabase()
 		{
-			context.Database.Migrate();
+			this.context.Database.EnsureDeleted();
+			this.context.Database.EnsureCreated();
 		}
 	}
 }

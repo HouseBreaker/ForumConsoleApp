@@ -1,28 +1,34 @@
 ﻿using System.Linq;
+using AutoMapper;
 using Forum.Data;
 using Forum.Models;
 using Forum.Services.Contracts;
+using AutoMapper.QueryableExtensions;
 
 namespace Forum.Services
 {
     public class CategoryService : ICategoryService
     {
 	    private readonly ForumDbContext context;
+	    private readonly IMapper mapper;
 
-	    public CategoryService(ForumDbContext context)
+	    public CategoryService(ForumDbContext context, IMapper mapper)
 	    {
 		    this.context = context;
+		    this.mapper = mapper;
 	    }
 
-	    public Category ByName(string name)
+	    public TModel ByName<TModel>(string name)
 	    {
 		    var category = context.Categories
-			    .SingleOrDefault(c => c.Name == name);
+				.Where(c => c.Name == name)
+				.ProjectTo<TModel>(mapper.ConfigurationProvider)
+			    .SingleOrDefault();
 
 		    return category;
 	    }
 
-	    public Category Create(string name)
+	    public TModel Create<TModel>(string name)
 	    {
 		    var category = new Category
 		    {
@@ -33,7 +39,9 @@ namespace Forum.Services
 
 		    context.SaveChanges();
 
-		    return category;
+		    var dto = mapper.Map<TModel>(category);
+
+		    return dto;
 	    }
     }
 }

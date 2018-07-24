@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using AutoMapper;
 using Forum.Data;
 using Forum.Services;
 using Forum.Services.Contracts;
@@ -29,7 +30,7 @@ namespace Forum.App
 				.Build();
 
 			serviceCollection.AddDbContext<ForumDbContext>(options =>
-				options.UseSqlServer(config.GetConnectionString("DefaultConnection"))
+				options.UseSqlServer(config.GetConnectionString("Production"), b => b.MigrationsAssembly("Forum.App"))
 			);
 
 			serviceCollection.AddTransient<IDatabaseInitializerService, DatabaseInitializerService>();
@@ -39,6 +40,8 @@ namespace Forum.App
 			serviceCollection.AddTransient<IReplyService, ReplyService>();
 
 			serviceCollection.AddSingleton<IUserSessionService, UserSessionService>();
+
+			serviceCollection.AddAutoMapper(cfg => cfg.AddProfile<ForumProfile>());
 
 			var serviceProvider = serviceCollection.BuildServiceProvider();
 
